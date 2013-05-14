@@ -1,0 +1,17 @@
+R> (let* ((degrees 4)
+       (grid (r "seq" 0 10 :length 100))
+       (values (loop for x in grid collect (r% "dchisq" x degrees))))
+  (r "par" :ann 0)
+  (r "plot" grid values :type "lines"))
+
+
+(not) OK:
+[_lm (r%-parse-eval "Fertility ~ .") :Data 'swiss]
+NOT OK:
+[_lm [_~ 'Fertility '.] :Data 'swiss] 
+
+
+
+
+R> [\[ '("a" "b" "c" "d" "e" "f") '(3 5)]
+("c" "e")

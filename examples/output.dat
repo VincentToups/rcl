@@ -1,0 +1,25 @@
+R> (r "help" "plot")
+"/Library/Frameworks/R.framework/Resources//library/graphics/help/plot"
+((:CALL :UNKNOWN :LANGUAGE-CONSTRUCT)
+ (:PAGER . "/Library/Frameworks/R.framework/Resources//bin/pager")
+ (:TOPIC . "plot") (:TRIED_ALL_PACKAGES NIL) (:TYPE . "help")
+ (:CLASS . "help_files_with_topic"))
+
+R> (r "library" "ggplot2")
+;R! Loading required package: grid
+;R! Loading required package: reshape
+;R! Loading required package: proto
+;R! Loading required package: splines
+;R! Loading required package: MASS
+;R! Loading required package: RColorBrewer
+;R! Loading required package: colorspace
+("ggplot2" "colorspace" "RColorBrewer" "MASS" "splines" "proto" "reshape"
+ "grid" "stats" "graphics" "grDevices" "utils" "datasets" "methods" "base")
+
+R> (r "help" "qplot")
+"/Library/Frameworks/R.framework/Resources//library/ggplot2/help/qplot-ay"
+((:CALL :UNKNOWN :LANGUAGE-CONSTRUCT)
+ (:PAGER . "/Library/Frameworks/R.framework/Resources//bin/pager")
+ (:TOPIC . "qplot") (:TRIED_ALL_PACKAGES NIL) (:TYPE . "help")
+ (:CLASS . "help_files_with_topic"))
+

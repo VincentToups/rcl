@@ -1,0 +1,82 @@
+I'd like to have:
+
+[plot '(1 2 3) '(4 5 6)]
+(r "plot" '(1 2 3) '(4 5 6))
+
+[print $R.version]
+(r "print" (r-variable "R.version"))
+
+;;[$R.version]
+;;(r-to-lisp (r-variable "R.version"))
+
+[library "MASS"]
+(r "library" "MASS")
+
+[head $painters]
+(r "head" (r-variable "painters"))
+
+[as.matrix $painters]
+(r "as.matrix" (r-variable "painters"))
+
+[print [qplot $mpg $wt :data 'mtcars :size 'cyl :geom '("smooth" "point")]]
+(r "print" (r% "qplot" (r-symbol "mpg") (r-symbol "wt") 
+	       :|data| (r-variable "mtcars") :|size| (r-symbol "cyl")
+	       :|geom| '("smooth" "point")))
+
+
+disable object translation within [...], $... are variables, 
+
+FROM weitz.de/rdnzl
+-------------------
+
+Special reader syntax
+
+In order to make entering .NET forms easier RDNZL provides a modified read syntax which consists of two parts.
+First, the left and right bracket characters are modified to be terminating macro characters. A form like
+
+[IsSubclassOf type other-type]
+
+is read as follows: Directly following the left bracket should be a
+symbol (IsSubclassOf in this example) which is read as if the standard
+readtable was used (except for the special role of the brackets) but
+with case preserved. The rest (type other-type in this case) is read
+up to the closing bracket by READ-DELIMITED-LIST. This results in a
+call to INVOKE like this:
+
+(invoke type "IsSubclassOf" other-type)
+
+If the symbol starts with a percent or dollar, sign then it is removed
+and the result is a call to PROPERTY or FIELD respectively:
+
+[%IsInterface type]  =>  (property type "IsInterface")
+[$textBox control]  =>  (field control "textBox")
+
+If the symbol contains a dot, then in all three cases this'll result
+in a static invocation where the part before the (last) dot is used as
+the name of the type:
+
+[System.Environment.Exit]  => (invoke "System.Environment" "Exit")
+[%System.Environment.UserName]  =>  (property "System.Environment" "UserName")
+[$OpCodes.Switch]  =>  (field "Opcodes" "Switch")
+
+If the symbol starts with a plus or minus sign, then this sign is
+replaced with "add_" or "remove_" respectively. This is the convention
+used to add or remove event handlers:
+
+[+KeyPress text-box (new "KeyPressEventHandler" #'reply)] => (invoke text-box "add_KeyPress" (new "KeyPressEventHandler" #'reply))
+
+The second syntax change is the addition of a new dispatch character
+to the # (sharpsign) reader macro, namely ` (backquote). This is
+intended to be used similarly to #' but with the syntax described
+above, i.e. you can write things like
+
+(mapcar #`%CanFocus list-of-forms)
+(apply #`GetMethod method-info other-args)
+(funcall #`(setf $textBox) new-text-box control)
+
+Note that this dispatch character also recognizes function names of
+the form (SETF symbol). The RDNZL source code contains more examples
+of using this modified syntax.
+
+Read Tim Bradshaw's article about the implications of a reader syntax
+as described above.
